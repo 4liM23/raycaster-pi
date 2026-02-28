@@ -45,7 +45,7 @@ public class Main {
         int[][] frame = new int[SCREEN_HEIGHT][SCREEN_WIDTH];
         byte[] buffer = new byte[SCREEN_WIDTH * SCREEN_HEIGHT * 2];
         // fb0 is the framebuffer device on Linux
-        RandomAccessFile fb = new RandomAccessFile("/dev/fb0", "rw");
+        RandomAccessFile fb = new RandomAccessFile("/dev/fb1", "rw");
         long tick = 1000000000 / FPS;
         long nextTick = System.nanoTime() + tick;
         int squareX = 0;
