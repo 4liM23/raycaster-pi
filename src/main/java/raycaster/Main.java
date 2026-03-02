@@ -1,6 +1,12 @@
-package raycaster;
+package main.java.raycaster;
 
 import java.io.*;
+import com.pi4j.Pi4J;
+import com.pi4j.context.Context;
+import com.pi4j.io.gpio.digital.DigitalInput;
+import com.pi4j.io.gpio.digital.DigitalInputConfigBuilder;
+import com.pi4j.io.gpio.digital.DigitalState;
+import com.pi4j.io.gpio.digital.PullResistance;
 
 public class Main {
     static int WHITE = 0xFFFF;
@@ -8,6 +14,10 @@ public class Main {
     static int SCREEN_WIDTH = 320;
     static int SCREEN_HEIGHT = 240;
     static int FPS = 30;
+    static int A_BUTTON_GPIO = 5;
+    static int B_BUTTON_GPIO = 6;
+    static int X_BUTTON_GPIO = 16;
+    static int Y_BUTTON_GPIO = 24;
 
     private static void pixelToBuffer(byte[] buffer, int pixel, int row, int col) {
         int index = (row * SCREEN_WIDTH + col) * 2;

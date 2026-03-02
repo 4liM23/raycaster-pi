@@ -1,0 +1,29 @@
+plugins {
+    id 'application'
+}
+
+repositories {
+    mavenCentral()
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+ext {
+    pi4jVersion = '2.8.0'
+}
+
+dependencies {
+    implementation "com.pi4j:pi4j-core:${pi4jVersion}"
+    implementation "com.pi4j:pi4j-plugin-raspberrypi:${pi4jVersion}"
+    implementation "com.pi4j:pi4j-plugin-gpiod:${pi4jVersion}"
+
+    runtimeOnly "org.slf4j:slf4j-simple:2.0.17"
+}
+
+application {
+    mainClass = 'raycaster.Main'
+}
