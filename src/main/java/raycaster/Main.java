@@ -1,4 +1,4 @@
-package main.java.raycaster;
+package raycaster;
 
 import java.io.*;
 import com.pi4j.Pi4J;
