@@ -14,7 +14,7 @@ public class Main {
     static int BLACK = 0x0000;
     static int SCREEN_WIDTH = 320;
     static int SCREEN_HEIGHT = 240;
-    static int FPS = 60;
+    static int FPS = 600;
     static int A_BUTTON_GPIO = 5;
     static int B_BUTTON_GPIO = 6;
     static int X_BUTTON_GPIO = 16;
