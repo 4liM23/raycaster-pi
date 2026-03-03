@@ -14,7 +14,7 @@ public class Main {
     static int BLACK = 0x0000;
     static int SCREEN_WIDTH = 320;
     static int SCREEN_HEIGHT = 240;
-    static int FPS = 30;
+    static int FPS = 60;
     static int A_BUTTON_GPIO = 5;
     static int B_BUTTON_GPIO = 6;
     static int X_BUTTON_GPIO = 16;
@@ -88,10 +88,15 @@ public class Main {
                 }
                 if (squareX > SCREEN_WIDTH - squareSize) {
                     squareX = 0;
-                    squareY += 1;
                 }
                 if (squareY > SCREEN_HEIGHT - squareSize) {
                     squareY = 0;
+                }
+                if (squareX < 0) {
+                    squareX = SCREEN_WIDTH - squareSize;
+                }
+                if (squareY < 0) {
+                    squareY = SCREEN_HEIGHT - squareSize;
                 }
                 clearFrame(frame);
                 frameCount++;
