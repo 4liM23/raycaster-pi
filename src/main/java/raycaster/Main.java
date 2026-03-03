@@ -9,6 +9,7 @@ import com.pi4j.io.gpio.digital.DigitalState;
 import com.pi4j.io.gpio.digital.PullResistance;
 
 public class Main {
+    static ButtonReader buttons = new ButtonReader();
     static int WHITE = 0xFFFF;
     static int BLACK = 0x0000;
     static int SCREEN_WIDTH = 320;
@@ -72,7 +73,19 @@ public class Main {
                 frameToBuffer(buffer, frame);
                 fb.seek(0);
                 fb.write(buffer);
-                squareX += 1;
+
+                if (buttons.A_Button_Pressed()) {
+                    squareX -= 2;
+                }
+                if (buttons.B_Button_Pressed()) {
+                    squareY -= 2;
+                }
+                if (buttons.X_Button_Pressed()) {
+                    squareX += 2;
+                }
+                if (buttons.Y_Button_Pressed()) {
+                    squareY += 2;
+                }
                 if (squareX > SCREEN_WIDTH - squareSize) {
                     squareX = 0;
                     squareY += 1;
@@ -87,5 +100,54 @@ public class Main {
             }
         }
 
+    }
+}
+
+class ButtonReader {
+    Context pi4j;
+    DigitalInput btnA, btnB, btnX, btnY;
+
+    public ButtonReader() {
+        pi4j = Pi4J.newAutoContext();
+        DigitalInputConfigBuilder cfg;
+        cfg = DigitalInput.newConfigBuilder(pi4j)
+                .id("btnA")
+                .address(5) // BCM GPIO number
+                .pull(PullResistance.PULL_UP);
+        btnA = pi4j.create(cfg);
+
+        cfg = DigitalInput.newConfigBuilder(pi4j)
+                .id("btnB")
+                .address(6) // BCM GPIO number
+                .pull(PullResistance.PULL_UP);
+        btnB = pi4j.create(cfg);
+
+        cfg = DigitalInput.newConfigBuilder(pi4j)
+                .id("btnX")
+                .address(16) // BCM GPIO number
+                .pull(PullResistance.PULL_UP);
+        btnX = pi4j.create(cfg);
+
+        cfg = DigitalInput.newConfigBuilder(pi4j)
+                .id("btnY")
+                .address(24) // BCM GPIO number
+                .pull(PullResistance.PULL_UP);
+        btnY = pi4j.create(cfg);
+    }
+
+    public boolean A_Button_Pressed() {
+        return btnA.isLow();
+    }
+
+    public boolean B_Button_Pressed() {
+        return btnB.isLow();
+    }
+
+    public boolean X_Button_Pressed() {
+        return btnX.isLow();
+    }
+
+    public boolean Y_Button_Pressed() {
+        return btnY.isLow();
     }
 }
