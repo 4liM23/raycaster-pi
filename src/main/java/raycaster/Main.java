@@ -61,7 +61,7 @@ public class Main {
         long nextTick = System.nanoTime() + tick;
         int squareX = 0;
         int squareY = 100;
-        int squareSize = 20;
+        int squareSize = 5;
 
         int frameCount = 0;
 
@@ -69,7 +69,9 @@ public class Main {
             long now = System.nanoTime();
             if (now >= nextTick) {
                 nextTick += tick;
-                drawSquare(frame, squareX, squareY, squareSize, WHITE);
+                for (int s = 0; s <= 400; s+=20;){
+                    drawSquare(frame, squareX + s, squareY, squareSize, WHITE);
+                }
                 frameToBuffer(buffer, frame);
                 fb.seek(0);
                 fb.write(buffer);
