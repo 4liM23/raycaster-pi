@@ -70,7 +70,7 @@ public class Main {
             if (now >= nextTick) {
                 nextTick += tick;
                 for (int s = 0; s <= 400; s += 20) {
-                    drawSquare(frame, squareX + s, squareY, squareSize, WHITE);
+                    drawSquare(frame, (squareX + s) % SCREEN_WIDTH, squareY, squareSize, WHITE);
                 }
                 frameToBuffer(buffer, frame);
                 fb.seek(0);
