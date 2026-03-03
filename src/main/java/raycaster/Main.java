@@ -14,7 +14,7 @@ public class Main {
     static int BLACK = 0x0000;
     static int SCREEN_WIDTH = 320;
     static int SCREEN_HEIGHT = 240;
-    static int FPS = 600;
+    static int FPS = 800;
     static int A_BUTTON_GPIO = 5;
     static int B_BUTTON_GPIO = 6;
     static int X_BUTTON_GPIO = 16;
@@ -55,11 +55,11 @@ public class Main {
     public static void main(String[] args) throws InterruptedException, IOException {
         int[][] frame = new int[SCREEN_HEIGHT][SCREEN_WIDTH];
         byte[] buffer = new byte[SCREEN_WIDTH * SCREEN_HEIGHT * 2];
-        // fb0 is the framebuffer device on Linux
+
         RandomAccessFile fb = new RandomAccessFile("/dev/fb_hat", "rw");
         long tick = 1000000000 / FPS;
         long nextTick = System.nanoTime() + tick;
-        int squareX = 0;
+        int squareX = 40;
         int squareY = 100;
         int squareSize = 5;
 
@@ -69,8 +69,8 @@ public class Main {
             long now = System.nanoTime();
             if (now >= nextTick) {
                 nextTick += tick;
-                for (int s = 0; s <= 400; s += 20) {
-                    drawSquare(frame, (squareX + s) % SCREEN_WIDTH, squareY, squareSize, WHITE);
+                for (int s = 0; s <= 320; s += 20) {
+                    drawSquare(frame, (squareX + s) % SCREEN_WIDTH, (squareY + (int)(Math.random() * 151) - (int)(Math.random() * 151)) % SCREEN_HEIGHT, squareSize, WHITE);
                 }
                 frameToBuffer(buffer, frame);
                 fb.seek(0);
