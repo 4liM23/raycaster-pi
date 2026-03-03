@@ -89,9 +89,9 @@ public class Main {
                 if (squareX > SCREEN_WIDTH - squareSize) {
                     squareX = 0;
                     squareY += 1;
-                    if (squareY > SCREEN_HEIGHT - squareSize) {
-                        squareY = 0;
-                    }
+                }
+                if (squareY > SCREEN_HEIGHT - squareSize) {
+                    squareY = 0;
                 }
                 clearFrame(frame);
                 frameCount++;
@@ -99,6 +99,7 @@ public class Main {
                 Thread.sleep((nextTick - now) / 1000000);
             }
         }
+        fb.close();
 
     }
 }
