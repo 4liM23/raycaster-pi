@@ -69,7 +69,7 @@ public class Main {
             long now = System.nanoTime();
             if (now >= nextTick) {
                 nextTick += tick;
-                for (int s = 0; s <= 400; s+=20;){
+                for (int s = 0; s <= 400; s += 20) {
                     drawSquare(frame, squareX + s, squareY, squareSize, WHITE);
                 }
                 frameToBuffer(buffer, frame);
