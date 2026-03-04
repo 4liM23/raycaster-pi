@@ -60,4 +60,8 @@ public class ButtonReader {
         return btnY.isLow();
     }
 
+    public void close() {
+        pi4j.shutdown();
+    }
+
 }
