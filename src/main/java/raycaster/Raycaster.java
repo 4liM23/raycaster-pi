@@ -7,14 +7,12 @@ public class Raycaster {
 
     private final double horizontalFov;
     private final double projectionPlaneDistance;
-    private TopDownRenderer rr = new TopDownRenderer();
 
     public Raycaster(int screenWidth, int screenHeight, double horizontalFov) {
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;
         this.horizontalFov = horizontalFov * (Math.PI / 180);
-        System.out.println("Raycaster Created!");
-        this.projectionPlaneDistance = (screenWidth / 2) / Math.tan(horizontalFov / 2);
+        this.projectionPlaneDistance = (screenWidth / 2) / Math.tan(this.horizontalFov / 2);
     }
 
     public void renderWalls(Player player, MapGrid map, PixelBuffer buffer) {
@@ -35,19 +33,15 @@ public class Raycaster {
 
             int bottom = computeWallBottom(top, sliceHeight);
 
-            // int color = chooseWallColor(hit, PixelBuffer.WHITE);
+            int color = chooseWallColor(hit, PixelBuffer.WHITE);
 
-            int color = PixelBuffer.WHITE;
-            // System.out.println(top + " " + bottom + " " + color);
             drawVerticalSlice(buffer, col, top, bottom, color);
 
         }
-        // rr.render(map, player, buffer);
     }
 
     private double computeRayAngle(Player player, int screenX) {
         return player.getAngle() - horizontalFov / 2 + (screenX + 0.5) * horizontalFov / screenWidth;
-        // return horizontalFov / screenWidth;
     }
 
     private RayHit castRay(Player player, MapGrid map, double rayAngle) {
@@ -109,14 +103,14 @@ public class Raycaster {
         }
 
         final double perpDist = hitVerticalSide
-                ? (sideDistX)
-                : (sideDistY);
+                ? (sideDistX - deltaDistX)
+                : (sideDistY - deltaDistY);
 
         return new RayHit(mapX, mapY, hitVerticalSide, perpDist);
     }
 
     private double computePerpendicularDistance(Player player, double rayAngle, RayHit hit) {
-        return hit.perpendicularDistance * Math.cos(player.getAngle() - rayAngle);
+        return hit.perpendicularDistance;
     }
 
     private int computeWallSliceHeight(double wallHeight, double perpendicularDistance) {
@@ -126,7 +120,6 @@ public class Raycaster {
 
     private int computeWallTop(int sliceHeight, Player player, double wallHeight) {
         int center = screenHeight / 2;
-        System.out.println("sliceHeight:    " + sliceHeight);
         return center - sliceHeight / 2;
     }
 
@@ -137,12 +130,9 @@ public class Raycaster {
     private void drawVerticalSlice(PixelBuffer buffer, int screenX, int top, int bottom, int rgb) {
         if (top < 0)
             top = 0;
-        // System.out.println(screenX + " " + top);
-
-        for (int y = top; y < PixelBuffer.SCREEN_HEIGHT && y < bottom; y++) {
+        for (int y = top; y < screenHeight && y < bottom; y++) {
             buffer.setPixel(screenX, y, rgb);
         }
-
     }
 
     private int chooseWallColor(RayHit hit, int initColor) {
