@@ -7,6 +7,7 @@ public class Raycaster {
 
     private final double horizontalFov;
     private final double projectionPlaneDistance;
+    private TopDownRenderer rr = new TopDownRenderer();
 
     public Raycaster(int screenWidth, int screenHeight, double horizontalFov) {
         this.screenWidth = screenWidth;
@@ -21,7 +22,6 @@ public class Raycaster {
         buffer.clear();
 
         for (int col = 0; col < screenWidth; col++) {
-            int color = PixelBuffer.WHITE;
 
             double rayAngle = computeRayAngle(player, col);
 
@@ -37,16 +37,18 @@ public class Raycaster {
 
             // int color = chooseWallColor(hit, PixelBuffer.WHITE);
 
-            TopDownRenderer rr = new TopDownRenderer();
-            rr.render(map, player, buffer);
-            // drawVerticalSlice(buffer, col, top, bottom, color);
+            int color = PixelBuffer.WHITE;
+
+            drawVerticalSlice(buffer, col, top, bottom, color);
 
         }
-
+        // rr.render(map, player, buffer);
     }
 
     private double computeRayAngle(Player player, int screenX) {
-        return player.getAngle() - horizontalFov / 2 + (screenX + 0.5) * horizontalFov / screenWidth;
+        // return player.getAngle() - horizontalFov / 2 + (screenX + 0.5) *
+        // horizontalFov / screenWidth;
+        return horizontalFov / screenWidth;
     }
 
     private RayHit castRay(Player player, MapGrid map, double rayAngle) {
@@ -136,7 +138,8 @@ public class Raycaster {
         if (top < 0)
             top = 0;
         for (int y = top; y < PixelBuffer.SCREEN_HEIGHT && y < bottom; y++) {
-            // buffer.setPixel(screenX, y, rgb);
+            System.out.println(screenX + "   " + y);
+            buffer.setPixel(screenX, y, rgb);
         }
 
     }
