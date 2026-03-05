@@ -110,8 +110,8 @@ public class Raycaster {
         }
 
         final double perpDist = hitVerticalSide
-                ? (sideDistX - deltaDistX)
-                : (sideDistY - deltaDistY);
+                ? (sideDistX)
+                : (sideDistY);
 
         return new RayHit(mapX, mapY, hitVerticalSide, perpDist);
     }
@@ -127,6 +127,7 @@ public class Raycaster {
 
     private int computeWallTop(int sliceHeight, Player player, double wallHeight) {
         int center = screenHeight / 2;
+
         return center - sliceHeight / 2;
     }
 
