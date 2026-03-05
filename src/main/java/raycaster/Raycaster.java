@@ -11,7 +11,7 @@ public class Raycaster {
     public Raycaster(int screenWidth, int screenHeight, double horizontalFov) {
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;
-        this.horizontalFov = horizontalFov;
+        this.horizontalFov = horizontalFov * (Math.PI / 180);
 
         this.projectionPlaneDistance = (screenWidth / 2) / Math.tan(horizontalFov / 2);
     }
@@ -37,6 +37,7 @@ public class Raycaster {
             int color = chooseWallColor(hit, PixelBuffer.WHITE);
 
             drawVerticalSlice(buffer, col, top, bottom, color);
+
         }
 
     }
