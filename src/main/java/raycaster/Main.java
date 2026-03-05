@@ -1,6 +1,6 @@
 package raycaster;
 
-import java.io.*;
+// import java.io.*;
 
 public class Main {
     static final int FPS = 30;

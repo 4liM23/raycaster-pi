@@ -2,11 +2,6 @@ package raycaster;
 
 public class Collision {
 
-    // helpers
-    private static double min(double a, double b) {
-        return a < b ? a : b;
-    }
-
     public static void movePlayer(Player p, MapGrid map, double dx, double dy) {
         double r = p.getRadius();
         double xPos = p.getX();
@@ -20,10 +15,15 @@ public class Collision {
         while (!map.isWall(lower, (int) yPos)) {
             lower--;
         }
+
         if (dx > 0) {
-            newXPos = xPos + min(dx, upper - (xPos + r));
+            double allowed = upper - (xPos + r);
+            double move = Math.min(dx, Math.max(0.0, allowed));
+            newXPos = xPos + move;
         } else {
-            newXPos = xPos - min(-dx, (xPos - r) - lower);
+            double allowed = (xPos - r) - lower;
+            double move = Math.min(-dx, Math.max(0.0, allowed));
+            newXPos = xPos - move;
         }
 
         // y position check
@@ -36,9 +36,13 @@ public class Collision {
             lower--;
         }
         if (dy > 0) {
-            newYPos = yPos + min(dy, upper - (yPos + r));
+            double allowed = upper - (yPos + r);
+            double move = Math.min(dy, Math.max(0.0, allowed));
+            newYPos = yPos + move;
         } else {
-            newYPos = yPos - min(-dy, (yPos - r) - lower);
+            double allowed = (yPos - r) - lower;
+            double move = Math.min(-dy, Math.max(0.0, allowed));
+            newYPos = yPos - move;
         }
 
         p.setPos(newXPos, newYPos);

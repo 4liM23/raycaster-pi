@@ -33,8 +33,8 @@ public class PixelBuffer {
         if (!inBounds(x, y))
             return;
         int index = (y * SCREEN_WIDTH + x) * 2;
-        data[index] = (byte) ((rgb >> 8) & 0xFF);
-        data[index + 1] = (byte) (rgb & 0xFF);
+        data[index] = (byte) (rgb & 0xFF);
+        data[index + 1] = (byte) ((rgb >> 8) & 0xFF);
     }
 
     public void fillRect(int x, int y, int w, int h, int rgb) {

@@ -5,11 +5,12 @@ public class TopDownRenderer {
     private static final int TILE_SIZE = 20;
 
     public void render(MapGrid map, Player p, PixelBuffer buf) {
-        int[][] grid = map.getMap();
+        buf.clear();
         // map
-        for (int r = 0; r < grid.length; r++) {
-            for (int c = 0; c < grid[0].length; c++) {
-                buf.fillRect(c * TILE_SIZE, r * TILE_SIZE, TILE_SIZE, TILE_SIZE, PixelBuffer.WHITE);
+        for (int r = 0; r < map.getHeight(); r++) {
+            for (int c = 0; c < map.getWidth(); c++) {
+                if (map.isWall(c, r))
+                    buf.fillRect(c * TILE_SIZE, r * TILE_SIZE, TILE_SIZE, TILE_SIZE, PixelBuffer.WHITE);
             }
         }
 
@@ -18,7 +19,7 @@ public class TopDownRenderer {
                 PixelBuffer.BLUE);
 
         // direction line
-        buf.drawLine((int) (p.getX() * TILE_SIZE), (int) (p.getY() * TILE_SIZE), 7, p.getAngle(),
+        buf.drawLine((int) (p.getX() * TILE_SIZE), (int) (p.getY() * TILE_SIZE), 12, p.getAngle(),
                 PixelBuffer.RED);
     }
 
