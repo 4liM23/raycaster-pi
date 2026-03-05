@@ -24,8 +24,8 @@ public class PixelBuffer {
 
     public void clear(int rgb) {
         for (int i = 0; i < data.length; i += 2) {
-            data[i] = (byte) ((rgb >> 8) & 0xFF);
-            data[i + 1] = (byte) (rgb & 0xFF);
+            data[i] = (byte) (rgb & 0xFF);
+            data[i + 1] = (byte) ((rgb >> 8) & 0xFF);
         }
     }
 

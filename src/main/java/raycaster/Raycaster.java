@@ -28,15 +28,15 @@ public class Raycaster {
 
             double perp = computePerpendicularDistance(player, rayAngle, hit);
 
-            int wallHeight = computeWallSliceHeight(map.getWallHeight(), perp);
+            int sliceHeight = computeWallSliceHeight(map.getWallHeight(), perp);
 
-            int top = computeWallTop(screenHeight, player, wallHeight);
+            int top = computeWallTop(sliceHeight, player, map.getWallHeight());
 
-            int bottom = computeWallBottom(top, wallHeight);
+            int bottom = computeWallBottom(top, sliceHeight);
 
             int color = chooseWallColor(hit, PixelBuffer.WHITE);
 
-            drawVerticalSlice(buffer, wallHeight, top, bottom, color);
+            drawVerticalSlice(buffer, col, top, bottom, color);
         }
 
     }
@@ -111,7 +111,7 @@ public class Raycaster {
     }
 
     private double computePerpendicularDistance(Player player, double rayAngle, RayHit hit) {
-        return hit.rawDistance * Math.cos(rayAngle - player.getAngle());
+        return hit.perpendicularDistance;
     }
 
     private int computeWallSliceHeight(double wallHeight, double perpendicularDistance) {
@@ -125,7 +125,7 @@ public class Raycaster {
     }
 
     private int computeWallBottom(int wallTop, int sliceHeight) {
-        return wallTop + sliceHeight - 1;
+        return wallTop + sliceHeight;
     }
 
     private void drawVerticalSlice(PixelBuffer buffer, int screenX, int top, int bottom, int rgb) {
@@ -146,13 +146,13 @@ public class Raycaster {
 
         public final boolean hitVerticalSide;
 
-        public final double rawDistance;
+        public final double perpendicularDistance;
 
-        public RayHit(int tileX, int tileY, boolean hitVerticalSide, double rawDistance) {
+        public RayHit(int tileX, int tileY, boolean hitVerticalSide, double perpDistance) {
             this.tileX = tileX;
             this.tileY = tileY;
             this.hitVerticalSide = hitVerticalSide;
-            this.rawDistance = rawDistance;
+            this.perpendicularDistance = perpDistance;
         }
     }
 }
