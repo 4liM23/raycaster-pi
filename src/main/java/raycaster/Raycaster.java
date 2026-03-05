@@ -116,7 +116,7 @@ public class Raycaster {
     }
 
     private double computePerpendicularDistance(Player player, double rayAngle, RayHit hit) {
-        return hit.perpendicularDistance;
+        return hit.perpendicularDistance * Math.cos(player.getAngle() - rayAngle);
     }
 
     private int computeWallSliceHeight(double wallHeight, double perpendicularDistance) {
