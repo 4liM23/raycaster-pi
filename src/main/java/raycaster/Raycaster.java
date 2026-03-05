@@ -21,6 +21,7 @@ public class Raycaster {
         buffer.clear();
 
         for (int col = 0; col < screenWidth; col++) {
+            int color = PixelBuffer.WHITE;
 
             double rayAngle = computeRayAngle(player, col);
 
@@ -35,9 +36,10 @@ public class Raycaster {
             int bottom = computeWallBottom(top, sliceHeight);
 
             // int color = chooseWallColor(hit, PixelBuffer.WHITE);
-            int color = PixelBuffer.WHITE;
 
-            drawVerticalSlice(buffer, col, top, bottom, color);
+            TopDownRenderer rr = new TopDownRenderer();
+            rr.render(map, player, buffer);
+            // drawVerticalSlice(buffer, col, top, bottom, color);
 
         }
 
@@ -134,8 +136,9 @@ public class Raycaster {
         if (top < 0)
             top = 0;
         for (int y = top; y < PixelBuffer.SCREEN_HEIGHT && y < bottom; y++) {
-            buffer.setPixel(screenX, y, rgb);
+            // buffer.setPixel(screenX, y, rgb);
         }
+
     }
 
     private int chooseWallColor(RayHit hit, int initColor) {
