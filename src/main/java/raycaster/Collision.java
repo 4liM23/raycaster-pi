@@ -15,6 +15,7 @@ public class Collision {
         while (!map.isWall(lower, (int) yPos)) {
             lower--;
         }
+        lower++;
 
         if (dx > 0) {
             double allowed = upper - (xPos + r);
@@ -35,6 +36,7 @@ public class Collision {
         while (!map.isWall((int) newXPos, lower)) {
             lower--;
         }
+        lower++;
         if (dy > 0) {
             double allowed = upper - (yPos + r);
             double move = Math.min(dy, Math.max(0.0, allowed));
