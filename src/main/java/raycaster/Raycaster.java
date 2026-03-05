@@ -34,7 +34,8 @@ public class Raycaster {
 
             int bottom = computeWallBottom(top, sliceHeight);
 
-            int color = chooseWallColor(hit, PixelBuffer.WHITE);
+            // int color = chooseWallColor(hit, PixelBuffer.WHITE);
+            int color = PixelBuffer.WHITE;
 
             drawVerticalSlice(buffer, col, top, bottom, color);
 
@@ -130,7 +131,9 @@ public class Raycaster {
     }
 
     private void drawVerticalSlice(PixelBuffer buffer, int screenX, int top, int bottom, int rgb) {
-        for (int y = Math.max(top, 0); y < Math.min(bottom, PixelBuffer.SCREEN_HEIGHT); y++) {
+        if (top < 0)
+            top = 0;
+        for (int y = top; y < PixelBuffer.SCREEN_HEIGHT && y < bottom; y++) {
             buffer.setPixel(screenX, y, rgb);
         }
     }
