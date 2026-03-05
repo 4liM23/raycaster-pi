@@ -11,13 +11,23 @@ public class Main {
         ButtonReader buttons = new ButtonReader();
         Movement movement = new Movement();
         MapGrid map = new MapGrid();
-        Player player = new Player(2.0, 2.0, 0, 0.25, 0.2, 0.2);
+        Player player = new Player(2.0, 2.0, 0, 0.35, 0.25, 0.16);
         TopDownRenderer renderer = new TopDownRenderer();
 
         long tick = 1000_000_000 / FPS;
         long now = System.nanoTime();
         long nextTick = now + tick;
 
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            try {
+                buffer.clear();
+                display.writeFrame(buffer.getBuffer());
+                buttons.close();
+                display.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }));
         while (true) {
             now = System.nanoTime();
             if (now >= nextTick) {
