@@ -37,6 +37,25 @@ public class PixelBuffer {
         data[index + 1] = (byte) ((rgb >> 8) & 0xFF);
     }
 
+    public static int shadeDarker(int rgb565, double darkenPercent) {
+        if (darkenPercent < 0)
+            darkenPercent = 0;
+        if (darkenPercent > 100)
+            darkenPercent = 100;
+
+        double factor = 1.0 - (darkenPercent / 100.0);
+
+        int r5 = (rgb565 >>> 11) & 0x1F;
+        int g6 = (rgb565 >>> 5) & 0x3F;
+        int b5 = rgb565 & 0x1F;
+
+        r5 = (int) Math.round(r5 * factor);
+        g6 = (int) Math.round(g6 * factor);
+        b5 = (int) Math.round(b5 * factor);
+
+        return (r5 << 11) | (g6 << 5) | b5;
+    }
+
     public void fillRect(int x, int y, int w, int h, int rgb) {
         for (int row = y; row < SCREEN_HEIGHT && row < y + h; row++) {
             for (int col = x; col < SCREEN_WIDTH && col < x + w; col++) {

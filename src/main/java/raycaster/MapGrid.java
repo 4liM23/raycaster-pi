@@ -2,6 +2,7 @@ package raycaster;
 
 public class MapGrid {
     private final int mapWidth = 16, mapHeight = 12;
+    private final double wallHeight = 1.0;
     private final int[][] map = {
             { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
             { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
@@ -29,6 +30,10 @@ public class MapGrid {
 
     public int getHeight() {
         return mapHeight;
+    }
+
+    public double getWallHeight() {
+        return wallHeight;
     }
 
     public int[][] getMap() {

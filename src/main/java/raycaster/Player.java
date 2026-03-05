@@ -6,15 +6,17 @@ public class Player {
     private double radius;
     private double moveSpeed;
     private double turnSpeed;
+    private double eyeHeight;
 
     public Player(double xPos, double yPos, double playerAngle, double playerRadius, double playerMoveSpeed,
-            double playerTurnSpeed) {
+            double playerTurnSpeed, double eyeH) {
         x = xPos;
         y = yPos;
         angle = playerAngle;
         radius = playerRadius;
         moveSpeed = playerMoveSpeed;
         turnSpeed = playerTurnSpeed;
+        eyeHeight = eyeH;
     }
 
     public double getX() {
@@ -39,6 +41,10 @@ public class Player {
 
     public double getTurnSpeed() {
         return turnSpeed;
+    }
+
+    public double getEyeHeight() {
+        return eyeHeight;
     }
 
     public void setPos(double x, double y) {

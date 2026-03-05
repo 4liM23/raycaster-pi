@@ -18,16 +18,6 @@ public class Main {
         long now = System.nanoTime();
         long nextTick = now + tick;
 
-        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            try {
-                buffer.clear();
-                display.writeFrame(buffer.getBuffer());
-                buttons.close();
-                display.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }));
         while (true) {
             now = System.nanoTime();
             if (now >= nextTick) {
