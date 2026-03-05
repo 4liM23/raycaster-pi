@@ -19,7 +19,7 @@ public class PixelBuffer {
     }
 
     private boolean inBounds(int x, int y) {
-        return x >= 0 && x <= SCREEN_WIDTH && y >= 0 && y <= SCREEN_HEIGHT;
+        return x >= 0 && x < SCREEN_WIDTH && y >= 0 && y < SCREEN_HEIGHT;
     }
 
     public void clear(int rgb) {

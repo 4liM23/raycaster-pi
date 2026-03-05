@@ -36,6 +36,6 @@ public class MapGrid {
     }
 
     public boolean isWall(int tx, int ty) {
-        return (tx < 0 || tx > mapWidth || ty < 0 || ty > mapHeight || map[tx][ty] == 1);
+        return (tx < 0 || tx >= mapWidth || ty < 0 || ty >= mapHeight || map[ty][tx] == 1);
     }
 }

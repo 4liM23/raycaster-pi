@@ -60,6 +60,10 @@ public class ButtonReader {
         return btnY.isLow();
     }
 
+    public boolean[] buttonsState() {
+        return new boolean[] { A_Button_Pressed(), B_Button_Pressed(), X_Button_Pressed(), Y_Button_Pressed() };
+    }
+
     public void close() {
         pi4j.shutdown();
     }

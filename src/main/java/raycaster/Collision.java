@@ -3,11 +3,11 @@ package raycaster;
 public class Collision {
 
     // helpers
-    private double min(double a, double b) {
+    private static double min(double a, double b) {
         return a < b ? a : b;
     }
 
-    public void movePlayer(Player p, MapGrid map, double dx, double dy) {
+    public static void movePlayer(Player p, MapGrid map, double dx, double dy) {
         double r = p.getRadius();
         double xPos = p.getX();
         double yPos = p.getY();
@@ -23,7 +23,7 @@ public class Collision {
         if (dx > 0) {
             newXPos = xPos + min(dx, upper - (xPos + r));
         } else {
-            newXPos = xPos - min(dx, (xPos - r) - lower);
+            newXPos = xPos - min(-dx, (xPos - r) - lower);
         }
 
         // y position check
@@ -38,7 +38,7 @@ public class Collision {
         if (dy > 0) {
             newYPos = yPos + min(dy, upper - (yPos + r));
         } else {
-            newYPos = yPos - min(dy, (yPos - r) - lower);
+            newYPos = yPos - min(-dy, (yPos - r) - lower);
         }
 
         p.setPos(newXPos, newYPos);

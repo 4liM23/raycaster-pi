@@ -9,16 +9,17 @@ public class TopDownRenderer {
         // map
         for (int r = 0; r < grid.length; r++) {
             for (int c = 0; c < grid[0].length; c++) {
-                buf.fillRect(c * TILE_SIZE, r * TILE_SIZE, TILE_SIZE, TILE_SIZE, buf.WHITE);
+                buf.fillRect(c * TILE_SIZE, r * TILE_SIZE, TILE_SIZE, TILE_SIZE, PixelBuffer.WHITE);
             }
         }
 
         // player
         buf.fillCircle((int) (p.getX() * TILE_SIZE), (int) (p.getY() * TILE_SIZE), (int) (p.getRadius() * TILE_SIZE),
-                buf.BLUE);
+                PixelBuffer.BLUE);
 
         // direction line
         buf.drawLine((int) (p.getX() * TILE_SIZE), (int) (p.getY() * TILE_SIZE), 7, p.getAngle(),
-                buf.RED);
+                PixelBuffer.RED);
     }
+
 }
