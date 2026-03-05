@@ -135,7 +135,8 @@ public class Raycaster {
     }
 
     private void drawVerticalSlice(PixelBuffer buffer, int screenX, int top, int bottom, int rgb) {
-        top = 40;
+        if (top < 0)
+            top = 0;
         // System.out.println(screenX + " " + top);
 
         for (int y = top; y < PixelBuffer.SCREEN_HEIGHT && y < bottom; y++) {
