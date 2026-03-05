@@ -13,7 +13,7 @@ public class Raycaster {
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;
         this.horizontalFov = horizontalFov * (Math.PI / 180);
-
+	System.out.println("Raycaster Created!");
         this.projectionPlaneDistance = (screenWidth / 2) / Math.tan(horizontalFov / 2);
     }
 
@@ -38,7 +38,7 @@ public class Raycaster {
             // int color = chooseWallColor(hit, PixelBuffer.WHITE);
 
             int color = PixelBuffer.WHITE;
-
+            // System.out.println(top + "    " + bottom + "     " + color);
             drawVerticalSlice(buffer, col, top, bottom, color);
 
         }
@@ -46,9 +46,8 @@ public class Raycaster {
     }
 
     private double computeRayAngle(Player player, int screenX) {
-        // return player.getAngle() - horizontalFov / 2 + (screenX + 0.5) *
-        // horizontalFov / screenWidth;
-        return horizontalFov / screenWidth;
+        return player.getAngle() - horizontalFov / 2 + (screenX + 0.5) * horizontalFov / screenWidth;
+        //return horizontalFov / screenWidth;
     }
 
     private RayHit castRay(Player player, MapGrid map, double rayAngle) {
@@ -127,7 +126,8 @@ public class Raycaster {
 
     private int computeWallTop(int sliceHeight, Player player, double wallHeight) {
         int center = screenHeight / 2;
-        return center - sliceHeight / 2;
+        System.out.println("sliceHeight:    " + sliceHeight);
+	return center - sliceHeight / 2;
     }
 
     private int computeWallBottom(int wallTop, int sliceHeight) {
@@ -135,10 +135,10 @@ public class Raycaster {
     }
 
     private void drawVerticalSlice(PixelBuffer buffer, int screenX, int top, int bottom, int rgb) {
-        if (top < 0)
-            top = 0;
+        top = 40;
+        // System.out.println(screenX + "   " + top);
+
         for (int y = top; y < PixelBuffer.SCREEN_HEIGHT && y < bottom; y++) {
-            System.out.println(screenX + "   " + y);
             buffer.setPixel(screenX, y, rgb);
         }
 
