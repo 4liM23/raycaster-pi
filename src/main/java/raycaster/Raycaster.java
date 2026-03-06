@@ -22,7 +22,7 @@ public class Raycaster {
 
     public void renderWalls(Player player, MapGrid map, PixelBuffer buffer) {
 
-        buffer.clear();
+        // buffer.clear();
         RayHit hit = new RayHit();
         // double rayAngle = player.getAngle() - horizontalFov / 2 + 0.5 * horizontalFov
         // / screenWidth;
