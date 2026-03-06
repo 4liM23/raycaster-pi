@@ -37,16 +37,6 @@ public class Raycaster {
 
             drawVerticalSlice(buffer, col, top, bottom, color);
 
-            // debug
-            if (col == 0 || col == screenWidth / 2 || col == screenWidth - 1) {
-                System.out.println(
-                        "col=" + col +
-                                " rayAngle=" + rayAngle +
-                                " rawHitDist=" + hit.perpendicularDistance +
-                                " perp=" + perp +
-                                " sliceHeight=" + sliceHeight);
-            }
-
         }
     }
 
@@ -120,7 +110,7 @@ public class Raycaster {
     }
 
     private double computePerpendicularDistance(Player player, double rayAngle, RayHit hit) {
-        return hit.perpendicularDistance;
+        return hit.perpendicularDistance * Math.cos(player.getAngle() - rayAngle);
     }
 
     private int computeWallSliceHeight(double wallHeight, double perpendicularDistance) {
