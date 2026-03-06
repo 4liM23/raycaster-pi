@@ -1,3 +1,2 @@
 # raycaster-pi
-Uhhhhh, idk
-
+Just trying to experiment with graphics computing.
