@@ -127,11 +127,21 @@ public class Raycaster {
         return wallTop + sliceHeight;
     }
 
-    private void drawVerticalSlice(PixelBuffer buffer, int screenX, int top, int bottom, int rgb) {
+    private void drawVerticalSlice(PixelBuffer buffer, int screenX, int top, int bottom, int wallColor) {
+        int ceilingColor = 0x202020;
+        int floorColor = 0x404040;
         if (top < 0)
             top = 0;
-        for (int y = top; y < screenHeight && y < bottom; y++) {
-            buffer.setPixel(screenX, y, rgb);
+        if (bottom > screenHeight)
+            bottom = screenHeight;
+        for (int y = 0; y < top; y++) {
+            buffer.setPixel(screenX, y, ceilingColor);
+        }
+        for (int y = top; y < bottom; y++) {
+            buffer.setPixel(screenX, y, wallColor);
+        }
+        for (int y = bottom; y < screenHeight; y++) {
+            buffer.setPixel(screenX, y, floorColor);
         }
     }
 
