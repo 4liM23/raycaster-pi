@@ -37,6 +37,16 @@ public class Raycaster {
 
             drawVerticalSlice(buffer, col, top, bottom, color);
 
+            // debug
+            if (col == 0 || col == screenWidth / 2 || col == screenWidth - 1) {
+                System.out.println(
+                        "col=" + col +
+                                " rayAngle=" + rayAngle +
+                                " rawHitDist=" + hit.perpendicularDistance +
+                                " perp=" + perp +
+                                " sliceHeight=" + sliceHeight);
+            }
+
         }
     }
 
