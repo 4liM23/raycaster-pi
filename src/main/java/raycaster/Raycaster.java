@@ -40,6 +40,15 @@ public class Raycaster {
             int bottom = computeWallBottom(top, sliceHeight);
 
             int wallX = (int) (wallTexture.getWidth() * computeWallX(player, rayAngle, hit));
+
+            // added to account for texture mirroring
+            if (hit.hitVerticalSide && Math.cos(rayAngle) > 0) {
+                wallX = wallTexture.getWidth() - wallX - 1;
+            }
+
+            if (!hit.hitVerticalSide && Math.sin(rayAngle) < 0) {
+                wallX = wallTexture.getWidth() - wallX - 1;
+            }
             drawTexturedVerticalSlice(buffer, wallTexture, hit, col, top, bottom, wallX);
             // drawVerticalSlice(buffer, col, top, bottom, color);
 
