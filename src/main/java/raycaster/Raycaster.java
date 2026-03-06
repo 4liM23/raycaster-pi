@@ -8,7 +8,13 @@ public class Raycaster {
     private final double horizontalFov;
     private final double projectionPlaneDistance;
 
+    private final Texture wallTexture;
+
     public Raycaster(int screenWidth, int screenHeight, double horizontalFov) {
+        this.wallTexture = new Texture("assets/textures/walls/test.png");
+        // debug
+        System.out
+                .println(wallTexture.getWidth() + "   " + wallTexture.getHeight() + "   " + wallTexture.getPixel(0, 0));
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;
         this.horizontalFov = horizontalFov * (Math.PI / 180);
