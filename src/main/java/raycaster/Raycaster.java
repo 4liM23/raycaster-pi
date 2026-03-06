@@ -182,7 +182,8 @@ public class Raycaster {
             int textY = (int) ((y - top) * textH / (double) sliceHeight);
             if (textY >= textH)
                 textY = textH - 1;
-            buffer.setPixel(screenX, y, texture.getPixel(textX, textY));
+            int rgb = texture.getPixel(textX, textY) & 0x00FFFFFF;
+            buffer.setPixel(screenX, y, rgb);
         }
         for (int y = bottom; y < screenHeight; y++) {
             buffer.setPixel(screenX, y, floorColor);
