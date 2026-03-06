@@ -37,6 +37,15 @@ public class PixelBuffer {
         data[index + 1] = (byte) ((rgb >> 8) & 0xFF);
     }
 
+    public static int from32To16Rgb(int rgb) {
+        int rgb888 = rgb & 0x00FFFFFF;
+        int r = (rgb888 >> 16) & 0xFF;
+        int g = (rgb888 >> 8) & 0xFF;
+        int b = rgb888 & 0xFF;
+
+        return ((r >> 3) << 11) | ((g >> 2) << 5) | (b >> 3);
+    }
+
     public static int shadeDarker(int rgb565, int darkenPercent) {
         if (darkenPercent < 0)
             darkenPercent = 0;
