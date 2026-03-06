@@ -24,21 +24,22 @@ public class Raycaster {
 
         buffer.clear();
         RayHit hit = new RayHit();
-        double rayAngle = player.getAngle() - horizontalFov / 2 + 0.5 * horizontalFov / screenWidth;
+        // double rayAngle = player.getAngle() - horizontalFov / 2 + 0.5 * horizontalFov
+        // / screenWidth;
         double angleStep = horizontalFov / screenWidth;
         double dirX = Math.cos(player.getAngle());
         double dirY = Math.sin(player.getAngle());
         double planeX = -dirY * planeScale;
         double planeY = dirX * planeScale;
         for (int col = 0; col < screenWidth; col++) {
-            rayAngle += angleStep;
-            double cameraX = 2.0 * col / screenWidth - 1.0;
+            // rayAngle += angleStep;
+            double cameraX = 2.0 * col / (double) screenWidth - 1.0;
             double rayDirX = dirX + planeX * cameraX;
             double rayDirY = dirY + planeY * cameraX;
 
             castRay(player, map, rayDirX, rayDirY, hit);
 
-            double perp = computePerpendicularDistance(player, rayAngle, hit);
+            double perp = hit.perpendicularDistance;
 
             int sliceHeight = computeWallSliceHeight(map.getWallHeight(), perp);
 
@@ -46,14 +47,13 @@ public class Raycaster {
 
             int bottom = computeWallBottom(top, sliceHeight);
 
-            int wallX = (int) (wallTexture.getWidth() * computeWallX(player, rayAngle, hit));
+            int wallX = (int) (wallTexture.getWidth() * computeWallX(player, rayDirX, rayDirY, hit));
 
             // added to account for texture mirroring
-            if (hit.hitVerticalSide && Math.cos(rayAngle) > 0) {
+            if (hit.hitVerticalSide && rayDirX > 0) {
                 wallX = wallTexture.getWidth() - wallX - 1;
             }
-
-            if (!hit.hitVerticalSide && Math.sin(rayAngle) < 0) {
+            if (!hit.hitVerticalSide && rayDirY < 0) {
                 wallX = wallTexture.getWidth() - wallX - 1;
             }
             drawTexturedVerticalSlice(buffer, wallTexture, hit, col, top, bottom, wallX);
@@ -121,15 +121,15 @@ public class Raycaster {
             }
         }
 
-        final double perpDist = hitVerticalSide
-                ? (sideDistX - deltaDistX)
-                : (sideDistY - deltaDistY);
+        double perpDist;
+
+        if (hitVerticalSide) {
+            perpDist = (mapX - player.getX() + (1 - stepX) / 2.0) / rayDirX;
+        } else {
+            perpDist = (mapY - player.getY() + (1 - stepY) / 2.0) / rayDirY;
+        }
 
         rayHit.storeData(mapX, mapY, hitVerticalSide, perpDist);
-    }
-
-    private double computePerpendicularDistance(Player player, double rayAngle, RayHit hit) {
-        return hit.perpendicularDistance * Math.cos(player.getAngle() - rayAngle);
     }
 
     private int computeWallSliceHeight(double wallHeight, double perpendicularDistance) {
@@ -137,14 +137,14 @@ public class Raycaster {
 
     }
 
-    private double computeWallX(Player player, double rayAngle, RayHit hit) {
+    private double computeWallX(Player player, double rayDirX, double rayDirY, RayHit hit) {
         double perp = hit.perpendicularDistance;
         if (hit.hitVerticalSide) {
-            double hitY = player.getY() + perp * Math.sin(rayAngle);
+            double hitY = player.getY() + perp * rayDirY;
             hitY = hitY - (int) hitY;
             return hitY;
         } else {
-            double hitX = player.getX() + perp * Math.cos(rayAngle);
+            double hitX = player.getX() + perp * rayDirX;
             hitX = hitX - (int) hitX;
             return hitX;
         }
