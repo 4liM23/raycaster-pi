@@ -40,7 +40,7 @@ public class Raycaster {
             int bottom = computeWallBottom(top, sliceHeight);
 
             int wallX = (int) (wallTexture.getWidth() * computeWallX(player, rayAngle, hit));
-            drawTexturedVerticalSlice(buffer, wallTexture, col, top, bottom, wallX);
+            drawTexturedVerticalSlice(buffer, wallTexture, hit, col, top, bottom, wallX);
             // drawVerticalSlice(buffer, col, top, bottom, color);
 
         }
@@ -164,7 +164,8 @@ public class Raycaster {
         }
     }
 
-    private void drawTexturedVerticalSlice(PixelBuffer buffer, Texture texture, int screenX, int top, int bottom,
+    private void drawTexturedVerticalSlice(PixelBuffer buffer, Texture texture, RayHit hit, int screenX, int top,
+            int bottom,
             int textX) {
         int ceilingColor = 0x202020;
         int floorColor = 0x404040;
@@ -175,14 +176,13 @@ public class Raycaster {
         for (int y = 0; y < top; y++) {
             buffer.setPixel(screenX, y, ceilingColor);
         }
-
         int sliceHeight = bottom - top;
         int textH = texture.getHeight();
         for (int y = top; y < bottom; y++) {
             int textY = (int) ((y - top) * textH / (double) sliceHeight);
             if (textY >= textH)
                 textY = textH - 1;
-            int rgb = PixelBuffer.from32To16Rgb(texture.getPixel(textX, textY));
+            int rgb = chooseWallColorFromTexture(hit, texture, textX, textY, true);
             buffer.setPixel(screenX, y, rgb);
         }
         for (int y = bottom; y < screenHeight; y++) {
@@ -190,10 +190,11 @@ public class Raycaster {
         }
     }
 
-    private int chooseWallColor(RayHit hit, int initColor) {
-        if (hit.hitVerticalSide)
-            return PixelBuffer.shadeDarker(initColor, 35);
-        return initColor;
+    private int chooseWallColorFromTexture(RayHit hit, Texture texture, int textX, int textY, boolean shading) {
+        int rgb = PixelBuffer.from32To16Rgb(texture.getPixel(textX, textY));
+        if (shading && hit.hitVerticalSide)
+            return PixelBuffer.shadeDarker(rgb, 35);
+        return rgb;
     }
 
     public static final class RayHit {
