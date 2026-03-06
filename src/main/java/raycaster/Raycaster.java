@@ -12,9 +12,6 @@ public class Raycaster {
 
     public Raycaster(int screenWidth, int screenHeight, double horizontalFov) {
         this.wallTexture = new Texture("assets/textures/walls/test.png");
-        // debug
-        System.out
-                .println(wallTexture.getWidth() + "   " + wallTexture.getHeight() + "   " + wallTexture.getPixel(0, 0));
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;
         this.horizontalFov = horizontalFov * (Math.PI / 180);
@@ -24,12 +21,12 @@ public class Raycaster {
     public void renderWalls(Player player, MapGrid map, PixelBuffer buffer) {
 
         buffer.clear();
-
+        RayHit hit = new RayHit();
         for (int col = 0; col < screenWidth; col++) {
 
             double rayAngle = computeRayAngle(player, col);
 
-            RayHit hit = castRay(player, map, rayAngle);
+            castRay(player, map, rayAngle, hit);
 
             double perp = computePerpendicularDistance(player, rayAngle, hit);
 
@@ -59,7 +56,7 @@ public class Raycaster {
         return player.getAngle() - horizontalFov / 2 + (screenX + 0.5) * horizontalFov / screenWidth;
     }
 
-    private RayHit castRay(Player player, MapGrid map, double rayAngle) {
+    private void castRay(Player player, MapGrid map, double rayAngle, RayHit rayHit) {
 
         final double rayDirX = Math.cos(rayAngle);
         final double rayDirY = Math.sin(rayAngle);
@@ -121,7 +118,7 @@ public class Raycaster {
                 ? (sideDistX - deltaDistX)
                 : (sideDistY - deltaDistY);
 
-        return new RayHit(mapX, mapY, hitVerticalSide, perpDist);
+        rayHit.storeData(mapX, mapY, hitVerticalSide, perpDist);
     }
 
     private double computePerpendicularDistance(Player player, double rayAngle, RayHit hit) {
@@ -207,14 +204,12 @@ public class Raycaster {
     }
 
     public static final class RayHit {
-        public final int tileX;
-        public final int tileY;
+        public int tileX;
+        public int tileY;
+        public boolean hitVerticalSide;
+        public double perpendicularDistance;
 
-        public final boolean hitVerticalSide;
-
-        public final double perpendicularDistance;
-
-        public RayHit(int tileX, int tileY, boolean hitVerticalSide, double perpDistance) {
+        public void storeData(int tileX, int tileY, boolean hitVerticalSide, double perpDistance) {
             this.tileX = tileX;
             this.tileY = tileY;
             this.hitVerticalSide = hitVerticalSide;
