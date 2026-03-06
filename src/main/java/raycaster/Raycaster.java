@@ -37,6 +37,11 @@ public class Raycaster {
 
             drawVerticalSlice(buffer, col, top, bottom, color);
 
+            // debug
+            if (col == screenWidth / 2) {
+                System.out.println(computeWallX(player, rayAngle, hit));
+            }
+
         }
     }
 
@@ -116,6 +121,19 @@ public class Raycaster {
     private int computeWallSliceHeight(double wallHeight, double perpendicularDistance) {
         return (int) (wallHeight * projectionPlaneDistance / perpendicularDistance);
 
+    }
+
+    private double computeWallX(Player player, double rayAngle, RayHit hit) {
+        double perp = hit.perpendicularDistance;
+        if (hit.hitVerticalSide) {
+            double hitY = player.getY() + perp * Math.sin(rayAngle);
+            hitY = hitY - (int) hitY;
+            return hitY;
+        } else {
+            double hitX = player.getX() + perp * Math.cos(rayAngle);
+            hitX = hitX - (int) hitX;
+            return hitX;
+        }
     }
 
     private int computeWallTop(int sliceHeight, Player player, double wallHeight) {
