@@ -7,6 +7,7 @@ public class Raycaster {
 
     private final double horizontalFov;
     private final double projectionPlaneDistance;
+    private final double planeScale;
 
     private final Texture wallTexture;
 
@@ -15,18 +16,27 @@ public class Raycaster {
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;
         this.horizontalFov = horizontalFov * (Math.PI / 180);
-        this.projectionPlaneDistance = (screenWidth / 2) / Math.tan(this.horizontalFov / 2);
+        this.planeScale = Math.tan(this.horizontalFov / 2.0);
+        this.projectionPlaneDistance = (screenWidth / 2) / this.planeScale;
     }
 
     public void renderWalls(Player player, MapGrid map, PixelBuffer buffer) {
 
         buffer.clear();
         RayHit hit = new RayHit();
+        double rayAngle = player.getAngle() - horizontalFov / 2 + 0.5 * horizontalFov / screenWidth;
+        double angleStep = horizontalFov / screenWidth;
+        double dirX = Math.cos(player.getAngle());
+        double dirY = Math.sin(player.getAngle());
+        double planeX = -dirY * planeScale;
+        double planeY = dirX * planeScale;
         for (int col = 0; col < screenWidth; col++) {
+            rayAngle += angleStep;
+            double cameraX = 2.0 * col / screenWidth - 1.0;
+            double rayDirX = dirX + planeX * cameraX;
+            double rayDirY = dirY + planeY * cameraX;
 
-            double rayAngle = computeRayAngle(player, col);
-
-            castRay(player, map, rayAngle, hit);
+            castRay(player, map, rayDirX, rayDirY, hit);
 
             double perp = computePerpendicularDistance(player, rayAngle, hit);
 
@@ -56,10 +66,7 @@ public class Raycaster {
         return player.getAngle() - horizontalFov / 2 + (screenX + 0.5) * horizontalFov / screenWidth;
     }
 
-    private void castRay(Player player, MapGrid map, double rayAngle, RayHit rayHit) {
-
-        final double rayDirX = Math.cos(rayAngle);
-        final double rayDirY = Math.sin(rayAngle);
+    private void castRay(Player player, MapGrid map, double rayDirX, double rayDirY, RayHit rayHit) {
 
         int mapX = (int) player.getX();
         int mapY = (int) player.getY();
