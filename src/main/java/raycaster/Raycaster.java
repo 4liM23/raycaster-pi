@@ -39,14 +39,9 @@ public class Raycaster {
 
             int bottom = computeWallBottom(top, sliceHeight);
 
-            int color = chooseWallColor(hit, PixelBuffer.WHITE);
-
-            int band = (int) (8 * computeWallX(player, rayAngle, hit));
-            if (band < 4) {
-                color = PixelBuffer.shadeDarker(color, 10);
-            }
-
-            drawVerticalSlice(buffer, col, top, bottom, color);
+            int wallX = (int) (wallTexture.getWidth() * computeWallX(player, rayAngle, hit));
+            drawTexturedVerticalSlice(buffer, wallTexture, col, top, bottom, wallX);
+            // drawVerticalSlice(buffer, col, top, bottom, color);
 
         }
     }
@@ -163,6 +158,29 @@ public class Raycaster {
         }
         for (int y = top; y < bottom; y++) {
             buffer.setPixel(screenX, y, wallColor);
+        }
+        for (int y = bottom; y < screenHeight; y++) {
+            buffer.setPixel(screenX, y, floorColor);
+        }
+    }
+
+    private void drawTexturedVerticalSlice(PixelBuffer buffer, Texture texture, int screenX, int top, int bottom,
+            int textX) {
+        int ceilingColor = 0x202020;
+        int floorColor = 0x404040;
+        if (top < 0)
+            top = 0;
+        if (bottom > screenHeight)
+            bottom = screenHeight;
+        for (int y = 0; y < top; y++) {
+            buffer.setPixel(screenX, y, ceilingColor);
+        }
+
+        int sliceHeight = bottom - top;
+        int textH = texture.getHeight();
+        for (int y = top; y < bottom; y++) {
+            int textY = textH * (y / sliceHeight);
+            buffer.setPixel(screenX, y, texture.getPixel(textX, textY));
         }
         for (int y = bottom; y < screenHeight; y++) {
             buffer.setPixel(screenX, y, floorColor);
