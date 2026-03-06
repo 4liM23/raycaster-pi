@@ -35,12 +35,12 @@ public class Raycaster {
 
             int color = chooseWallColor(hit, PixelBuffer.WHITE);
 
-            drawVerticalSlice(buffer, col, top, bottom, color);
-
-            // debug
-            if (col == screenWidth / 2) {
-                System.out.println(computeWallX(player, rayAngle, hit));
+            int band = (int) (8 * computeWallX(player, rayAngle, hit));
+            if (band < 4) {
+                color = PixelBuffer.shadeDarker(color, 10);
             }
+
+            drawVerticalSlice(buffer, col, top, bottom, color);
 
         }
     }
