@@ -9,6 +9,8 @@ public class Raycaster {
     private final double projectionPlaneDistance;
     private final double planeScale;
 
+    private final double[] cameraXByColumn;
+
     private final Texture wallTexture;
 
     public Raycaster(int screenWidth, int screenHeight, double horizontalFov) {
@@ -18,6 +20,10 @@ public class Raycaster {
         this.horizontalFov = horizontalFov * (Math.PI / 180);
         this.planeScale = Math.tan(this.horizontalFov / 2.0);
         this.projectionPlaneDistance = (screenWidth / 2) / this.planeScale;
+        cameraXByColumn = new double[screenWidth];
+        for (int col = 0; col < screenWidth; col++) {
+            cameraXByColumn[col] = 2.0 * col / (double) screenWidth - 1.0;
+        }
     }
 
     public void renderWalls(Player player, MapGrid map, PixelBuffer buffer) {
@@ -26,14 +32,14 @@ public class Raycaster {
         RayHit hit = new RayHit();
         // double rayAngle = player.getAngle() - horizontalFov / 2 + 0.5 * horizontalFov
         // / screenWidth;
-        double angleStep = horizontalFov / screenWidth;
+        // double angleStep = horizontalFov / screenWidth;
         double dirX = Math.cos(player.getAngle());
         double dirY = Math.sin(player.getAngle());
         double planeX = -dirY * planeScale;
         double planeY = dirX * planeScale;
         for (int col = 0; col < screenWidth; col++) {
             // rayAngle += angleStep;
-            double cameraX = 2.0 * col / (double) screenWidth - 1.0;
+            double cameraX = cameraXByColumn[col];
             double rayDirX = dirX + planeX * cameraX;
             double rayDirY = dirY + planeY * cameraX;
 
