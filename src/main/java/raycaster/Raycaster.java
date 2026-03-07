@@ -13,13 +13,13 @@ public class Raycaster {
 
     private final Texture wallTexture;
 
-    public Raycaster(int screenWidth, int screenHeight, double horizontalFov) {
-        this.wallTexture = new Texture("assets/textures/walls/test.png");
+    public Raycaster(int screenWidth, int screenHeight, double horizontalFov, Texture wallTexture) {
+        this.wallTexture = wallTexture;
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;
         this.horizontalFov = horizontalFov * (Math.PI / 180);
         this.planeScale = Math.tan(this.horizontalFov / 2.0);
-        this.projectionPlaneDistance = (screenWidth / 2) / this.planeScale;
+        this.projectionPlaneDistance = (screenWidth / 2.0) / this.planeScale;
         cameraXByColumn = new double[screenWidth];
         for (int col = 0; col < screenWidth; col++) {
             cameraXByColumn[col] = 2.0 * col / (double) screenWidth - 1.0;

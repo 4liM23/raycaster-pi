@@ -34,8 +34,14 @@ public class Main {
                 0.35, 0.05, 0.04,
                 0.5);
         long s6 = System.nanoTime();
-        Raycaster caster = new Raycaster(PixelBuffer.SCREEN_WIDTH, PixelBuffer.SCREEN_HEIGHT, FOV);
+        Texture wallTexture = new Texture("assets/textures/walls/test.png");
         long s7 = System.nanoTime();
+        Raycaster caster = new Raycaster(
+                PixelBuffer.SCREEN_WIDTH,
+                PixelBuffer.SCREEN_HEIGHT,
+                FOV,
+                wallTexture);
+        long s8 = System.nanoTime();
 
         // debug
         System.out.println("FramebufferDisplay: " + (s1 - s0));
@@ -44,7 +50,8 @@ public class Main {
         System.out.println("Movement: " + (s4 - s3));
         System.out.println("MapGrid: " + (s5 - s4));
         System.out.println("Player: " + (s6 - s5));
-        System.out.println("Raycaster: " + (s7 - s6));
+        System.out.println("Texture: " + (s7 - s6));
+        System.out.println("Raycaster: " + (s8 - s7));
 
         final long stepNs = 1_000_000_000L / UPS;
 
