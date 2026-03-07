@@ -210,7 +210,7 @@ public class Raycaster {
     }
 
     private int chooseWallColorFromTexture(RayHit hit, Texture texture, int textX, int textY, boolean shading) {
-        int rgb = PixelBuffer.from32To16Rgb(texture.getPixel(textX, textY));
+        int rgb = texture.getPixel(textX, textY);
         if (shading && hit.hitVerticalSide)
             return PixelBuffer.shadeDarker(rgb, 35);
         return rgb;
