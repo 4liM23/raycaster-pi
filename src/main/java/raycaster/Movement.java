@@ -19,7 +19,7 @@ public class Movement {
         if (inputs[Y])
             moveDir--;
 
-        p.adjustAngle(turnDir, delta);
+        p.adjustAngle(turnDir * delta);
         double dx = moveDir * p.getVector_X() * delta;
         double dy = moveDir * p.getVector_Y() * delta;
         if (dx != 0 || dy != 0)
