@@ -3,7 +3,7 @@ package raycaster;
 public class Movement {
     static final int A = 0, B = 1, X = 2, Y = 3;
 
-    public void actOnInput(Player p, MapGrid map, boolean[] inputs) {
+    public void actOnInput(Player p, MapGrid map, double delta, boolean[] inputs) {
         int moveDir = 0;
         int turnDir = 0;
         // A button >>> left
@@ -19,9 +19,9 @@ public class Movement {
         if (inputs[Y])
             moveDir--;
 
-        p.adjustAngle(turnDir);
-        double dx = moveDir * p.getVector_X();
-        double dy = moveDir * p.getVector_Y();
+        p.adjustAngle(turnDir * delta);
+        double dx = moveDir * p.getVector_X() * delta;
+        double dy = moveDir * p.getVector_Y() * delta;
         if (dx != 0 || dy != 0)
             Collision.movePlayer(p, map, dx, dy);
     }
