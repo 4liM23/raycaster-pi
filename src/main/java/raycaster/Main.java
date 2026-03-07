@@ -3,7 +3,7 @@ package raycaster;
 // import java.io.*;
 
 public class Main {
-    static final int FPS = 30;
+    static final int UPS = 120; // updates per second
     static final int FOV = 60;
 
     public static void main(String[] args) throws Exception {
@@ -12,43 +12,57 @@ public class Main {
         ButtonReader buttons = new ButtonReader();
         Movement movement = new Movement();
         MapGrid map = new MapGrid();
-        Player player = new Player(2.0, 2.0, 0, 0.35, 0.5, 0.4, 0.5);
-        // TopDownRenderer renderer = new TopDownRenderer();
+        Player player = new Player(
+                2.0, 2.0, 0,
+                0.35, 0.5, 0.4,
+                0.5);
         Raycaster caster = new Raycaster(PixelBuffer.SCREEN_WIDTH, PixelBuffer.SCREEN_HEIGHT, FOV);
 
-        long tick = 1000_000_000 / FPS;
-        long now = System.nanoTime();
-        long nextTick = now + tick;
+        final long stepNs = 1_000_000_000L / UPS;
+
+        long lastTime = System.nanoTime();
+        long accumulator = 0L;
+
         int frameCount = 0;
         long t1 = 0, t2 = 0, t3 = 0, t4 = 0;
 
-        double lastFrameTime = now;
         while (true) {
-            now = System.nanoTime();
-            double dt = (now - lastFrameTime) / 1_000_000_000.0;
-            if (dt > 0.05)
-                dt = 0.05;
-            if (now >= nextTick) {
-                nextTick += tick;
-                frameCount++;
-                t1 = System.nanoTime();
-                movement.actOnInput(player, map, dt, buttons.buttonsState());
-                t2 = System.nanoTime();
-                // renderer.render(map, player, buffer);
-                caster.renderWalls(player, map, buffer);
-                t3 = System.nanoTime();
-                display.writeFrame(buffer.getBuffer());
-                t4 = System.nanoTime();
-            } else {
-                Thread.sleep((nextTick - now) / 1000_000);
+            long now = System.nanoTime();
+            long frameTime = now - lastTime;
+            lastTime = now;
+
+            if (frameTime > 250_000_000L) {
+                frameTime = 250_000_000L; // safety cap
             }
+
+            accumulator += frameTime;
+
+            int updates = 0;
+            while (accumulator >= stepNs && updates < 5) {
+                movement.actOnInput(player, map, buttons.buttonsState());
+                accumulator -= stepNs;
+                updates++;
+            }
+
+            // debug
+            t1 = System.nanoTime();
+            caster.renderWalls(player, map, buffer);
+            t2 = System.nanoTime();
+            display.writeFrame(buffer.getBuffer());
+            t3 = System.nanoTime();
+
+            frameCount++;
             if (frameCount % 60 == 0) {
-                System.out.println("Frame: " + frameCount + "\nInput & movement: " + (t2 - t1) + "\nRender: "
-                        + (t3 - t2) + "\nWrite buffer: " + (t4 - t3));
+                System.out.println(
+                        "Frame: " + frameCount +
+                                "\nRender: " + (t2 - t1) +
+                                "\nWrite buffer: " + (t3 - t2));
             }
 
-            lastFrameTime = now;
+            long sleepNs = stepNs - accumulator;
+            if (sleepNs > 1_000_000L) {
+                Thread.sleep(sleepNs / 1_000_000L);
+            }
         }
-
     }
 }

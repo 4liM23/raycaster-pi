@@ -52,8 +52,8 @@ public class Player {
         this.x = x;
     }
 
-    public void adjustAngle(int direction, double delta) {
-        angle = (angle + direction * turnSpeed * delta) % (2 * Math.PI);
+    public void adjustAngle(int direction) {
+        angle = (angle + direction * turnSpeed) % (2 * Math.PI);
     }
 
     public double getVector_X() {
