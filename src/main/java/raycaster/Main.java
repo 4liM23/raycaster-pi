@@ -56,7 +56,8 @@ public class Main {
                 System.out.println(
                         "Frame: " + frameCount +
                                 "\nRender: " + (t2 - t1) +
-                                "\nWrite buffer: " + (t3 - t2));
+                                "\nWrite buffer: " + (t3 - t2) +
+                                "\nUpdates this frame: " + updates);
             }
 
             long sleepNs = stepNs - accumulator;
