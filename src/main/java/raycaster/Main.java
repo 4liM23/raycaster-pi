@@ -14,7 +14,7 @@ public class Main {
         MapGrid map = new MapGrid();
         Player player = new Player(
                 2.0, 2.0, 0,
-                0.35, 0.5, 0.4,
+                0.35, 0.05, 0.04,
                 0.5);
         Raycaster caster = new Raycaster(PixelBuffer.SCREEN_WIDTH, PixelBuffer.SCREEN_HEIGHT, FOV);
 
@@ -24,7 +24,7 @@ public class Main {
         long accumulator = 0L;
 
         int frameCount = 0;
-        long t1 = 0, t2 = 0, t3 = 0, t4 = 0;
+        long t1 = 0, t2 = 0, t3 = 0;
 
         while (true) {
             long now = System.nanoTime();
