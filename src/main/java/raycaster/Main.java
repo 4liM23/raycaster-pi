@@ -1,8 +1,12 @@
 package raycaster;
 
+import java.awt.Frame;
+
 // import java.io.*;
 
 public class Main {
+    static final boolean SAVE_FIRST_FRAME = true; // save the first frame into an image
+    static final String firstFramePath = "media/first-frame.png";
     static final int UPS = 120; // updates per second
     static final int FOV = 60;
 
@@ -34,7 +38,7 @@ public class Main {
                 0.35, 0.05, 0.04,
                 0.5);
         long s6 = System.nanoTime();
-        Texture wallTexture = new Texture("assets/textures/walls/test.png");
+        Texture wallTexture = new Texture("assets/textures/walls/brick_wall.png");
         long s7 = System.nanoTime();
         Raycaster caster = new Raycaster(
                 PixelBuffer.SCREEN_WIDTH,
@@ -53,6 +57,12 @@ public class Main {
         System.out.println("Texture: " + (s7 - s6));
         System.out.println("Raycaster: " + (s8 - s7));
 
+        // saving first frame
+        if (SAVE_FIRST_FRAME) {
+            caster.renderWalls(player, map, buffer);
+            FramebufferDisplay.saveScreenshot(buffer, firstFramePath);
+        }
+
         final long stepNs = 1_000_000_000L / UPS;
 
         long lastTime = System.nanoTime();
@@ -64,7 +74,7 @@ public class Main {
             lastTime = now;
 
             if (frameTime > 250_000_000L) {
-                frameTime = 250_000_000L; // safety cap
+                frameTime = 250_000_000L;
             }
 
             accumulator += frameTime;

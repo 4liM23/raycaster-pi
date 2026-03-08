@@ -37,6 +37,14 @@ public class PixelBuffer {
         data[index + 1] = (byte) ((rgb >> 8) & 0xFF);
     }
 
+    public int getPixel(int x, int y) {
+        if (!inBounds(x, y)) {
+            return 0;
+        }
+        int index = (y * SCREEN_WIDTH + x) * 2;
+        return data[index] | ((data[index + 1] << 8) & 0xFF00);
+    }
+
     public static int from32To16Rgb(int rgb) {
         int rgb888 = rgb & 0x00FFFFFF;
         int r = (rgb888 >> 16) & 0xFF;
@@ -44,6 +52,19 @@ public class PixelBuffer {
         int b = rgb888 & 0xFF;
 
         return ((r >> 3) << 11) | ((g >> 2) << 5) | (b >> 3);
+    }
+
+    public static int from16To32Rgb(int rgb565) {
+
+        int r5 = (rgb565 >> 11) & 0x1F;
+        int g6 = (rgb565 >> 5) & 0x3F;
+        int b5 = rgb565 & 0x1F;
+
+        int r8 = (r5 * 255) / 31;
+        int g8 = (g6 * 255) / 63;
+        int b8 = (b5 * 255) / 31;
+
+        return (r8 << 16) | (g8 << 8) | b8;
     }
 
     public static int shadeDarker(int rgb565, int darkenPercent) {
