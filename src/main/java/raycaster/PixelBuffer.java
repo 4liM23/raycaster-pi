@@ -41,8 +41,12 @@ public class PixelBuffer {
         if (!inBounds(x, y)) {
             return 0;
         }
+
         int index = (y * SCREEN_WIDTH + x) * 2;
-        return data[index] | ((data[index + 1] << 8) & 0xFF00);
+        int low = data[index] & 0xFF;
+        int high = data[index + 1] & 0xFF;
+
+        return low | (high << 8);
     }
 
     public static int from32To16Rgb(int rgb) {
