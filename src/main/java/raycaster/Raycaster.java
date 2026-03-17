@@ -13,6 +13,9 @@ public class Raycaster {
 
     private final Texture wallTexture;
 
+    private final boolean RENDER_FOG = true;
+    private final int ABSOLUTE_FOG_DISTANCE = 20;
+
     public Raycaster(int screenWidth, int screenHeight, double horizontalFov, Texture wallTexture) {
         this.wallTexture = wallTexture;
         this.screenWidth = screenWidth;
@@ -202,6 +205,10 @@ public class Raycaster {
             if (textY >= textH)
                 textY = textH - 1;
             int rgb = chooseWallColorFromTexture(hit, texture, textX, textY, true);
+            if (RENDER_FOG) {
+                rgb = PixelBuffer.shadeDarker(rgb,
+                        Math.min(50, (int) (50 * hit.perpendicularDistance / ABSOLUTE_FOG_DISTANCE)));
+            }
             buffer.setPixel(screenX, y, rgb);
         }
         for (int y = bottom; y < screenHeight; y++) {
